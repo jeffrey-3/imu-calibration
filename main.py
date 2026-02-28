@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from numpy.linalg import eig, inv
 
-def generate_fake_data(n=10):
+def generate_fake_data(n=100):
     rng = np.random.default_rng(0)
 
     # Random points on sphere
@@ -104,3 +104,24 @@ def plot_3d(data, title):
 
 plot_3d(raw_data, "Raw Accelerometer Data (Ellipsoid)")
 plot_3d(calibrated, "Calibrated Data (Sphere)")
+
+def plot_2d_overlay(raw, calibrated, idx1, idx2, label1, label2, title):
+    plt.figure()
+    plt.scatter(raw[:, idx1], raw[:, idx2], s=5, alpha=0.6, label="Raw")
+    plt.scatter(calibrated[:, idx1], calibrated[:, idx2], s=5, alpha=0.6, label="Calibrated")
+    plt.gca().set_aspect('equal', 'box')
+    plt.xlabel(label1)
+    plt.ylabel(label2)
+    plt.title(title)
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
+# XY projection
+plot_2d_overlay(raw_data, calibrated, 0, 1, "X", "Y", "XY Projection")
+
+# XZ projection
+plot_2d_overlay(raw_data, calibrated, 0, 2, "X", "Z", "XZ Projection")
+
+# YZ projection
+plot_2d_overlay(raw_data, calibrated, 1, 2, "Y", "Z", "YZ Projection")
