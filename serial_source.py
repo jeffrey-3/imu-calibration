@@ -1,3 +1,4 @@
+import numpy as np
 import serial
 import sys
 from data_source import DataSource
@@ -7,13 +8,15 @@ class SerialDataSource(DataSource):
         self.ser = serial.Serial(port, baudrate)
 
     def read(self):
-        try:
-            while True:
-                b = self.ser.read(1)
-                if b:
-                    sys.stdout.write(b.decode(errors='replace'))
-                    sys.stdout.flush()
-        except KeyboardInterrupt:
-            print("\nExiting...")
-        finally:
-            self.ser.close()
+        rows = []
+        while len(rows) < 2000:
+            line = self.ser.readline()
+            try:
+                line = line.decode("utf-8").strip().split(",")
+                line = [float(v) for v in line]
+                if len(line) == 3:
+                    rows.append(line)
+                    print(line)
+            except ValueError:
+                print("Parse error:", line)
+        return np.array(rows, dtype=float)

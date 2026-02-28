@@ -8,6 +8,7 @@ from serial_source import SerialDataSource
 data_source = SerialDataSource("/dev/ttyACM0", 115200)
 
 raw_data = data_source.read()
+print(raw_data)
 
 def ellipsoid_fit(data):
     x = data[:,0]
@@ -84,7 +85,8 @@ plot_3d(calibrated, "Calibrated Data (Sphere)")
 def plot_2d_overlay(raw, calibrated, idx1, idx2, label1, label2, title):
     plt.figure()
     plt.scatter(raw[:, idx1], raw[:, idx2], s=5, alpha=0.6, label="Raw")
-    plt.scatter(calibrated[:, idx1], calibrated[:, idx2], s=5, alpha=0.6, label="Calibrated")
+    plt.scatter(calibrated[:, idx1], calibrated[:, idx2], s=5, alpha=0.6,
+        label="Calibrated")
     plt.gca().set_aspect('equal', 'box')
     plt.xlabel(label1)
     plt.ylabel(label2)
