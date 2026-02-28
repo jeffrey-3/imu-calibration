@@ -1,14 +1,20 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from numpy.linalg import eig, inv
-from fake_source import FakeDataSource
-from serial_source import SerialDataSource
+import argparse
 
-# data_source = FakeDataSource()
-data_source = SerialDataSource("/dev/ttyACM0", 115200)
+parser = argparse.ArgumentParser()
+parser.add_argument("--fake", action="store_true", help="Use fake data source")
+args = parser.parse_args()
+
+if args.fake:
+    from fake_source import FakeDataSource
+    data_source = FakeDataSource()
+else:
+    from serial_source import SerialDataSource
+    data_source = SerialDataSource("/dev/ttyACM0", 115200)
 
 raw_data = data_source.read()
-print(raw_data)
 
 def ellipsoid_fit(data):
     x = data[:,0]
