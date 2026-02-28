@@ -31,3 +31,11 @@ pip install -r requirements.txt
 ```sh
 python3 main.py
 ```
+
+## Testing
+
+You can test the program using fake generated data:
+
+```sh
+python3 main.py --fake
+```
