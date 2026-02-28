@@ -39,7 +39,7 @@ class SerialDataSource(DataSource):
                 try:
                     line = line.decode("utf-8").strip().split(",")
                     line = [float(v) for v in line]
-                    if len(line) == 3:
+                    if len(line) == 3 and max(line, key=abs) < 1.5:
                         rows.append(line)
                 except ValueError:
                     print("Parse error:", line)
