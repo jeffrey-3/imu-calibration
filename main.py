@@ -2,8 +2,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 from numpy.linalg import eig, inv
 from fake_source import FakeDataSource
+from serial_source import SerialDataSource
 
-data_source = FakeDataSource()
+# data_source = FakeDataSource()
+data_source = SerialDataSource("/dev/ttyACM0", 115200)
+
 raw_data = data_source.read()
 
 def ellipsoid_fit(data):
@@ -90,11 +93,6 @@ def plot_2d_overlay(raw, calibrated, idx1, idx2, label1, label2, title):
     plt.grid(True)
     plt.show()
 
-# XY projection
 plot_2d_overlay(raw_data, calibrated, 0, 1, "X", "Y", "XY Projection")
-
-# XZ projection
 plot_2d_overlay(raw_data, calibrated, 0, 2, "X", "Z", "XZ Projection")
-
-# YZ projection
 plot_2d_overlay(raw_data, calibrated, 1, 2, "Y", "Z", "YZ Projection")

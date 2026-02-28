@@ -2,7 +2,7 @@ import numpy as np
 from data_source import DataSource
 
 class FakeDataSource(DataSource):
-    def read(self) -> list:
+    def read(self):
         n = 100 # Number of data points
         rng = np.random.default_rng(0)
 
