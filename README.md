@@ -1,12 +1,10 @@
 # IMU Calibration
 
-## File input format
+## UART input format
 
-The program reads a `.txt` file and calibrates the gyroscope and accelerometer.
-There must not be a header.
-The columns from left to right should be: gyro_x, gyro_y, gyro_z, accel_x, accel_y, accel_z.
-The units for gyroscope are in radians/sec and the units for accelerometer should be in g.
-An example of the file format is located in the `examples` folder.
+```
+0.12302,0.12394,0.234324\r\n
+```
 
 ## Running the program
 
