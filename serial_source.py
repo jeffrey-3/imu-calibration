@@ -9,9 +9,7 @@ class SerialDataSource(DataSource):
         self.ser = serial.Serial(port, baudrate)
 
     def read(self):
-        start_time = time.time()
-        duration_per_position = 5
-        time_elapsed = 0
+        duration_per_position = 3
         rows = []
         positions = [
             "Upright",
@@ -21,22 +19,28 @@ class SerialDataSource(DataSource):
             "Roll Left",
             "Roll Right"
         ]
-        while time_elapsed < duration_per_position * len(positions):
-            time_elapsed = time.time() - start_time
-            position = min(int(time_elapsed // duration_per_position),
-                len(positions) - 1)
-            print(positions[position])
-            print(round(time_elapsed - position * duration_per_position), "/",
-                duration_per_position)
-            print(position + 1, "/", len(positions))
 
-            line = self.ser.readline()
-            try:
-                line = line.decode("utf-8").strip().split(",")
-                line = [float(v) for v in line]
-                if len(line) == 3:
-                    rows.append(line)
-                    print(line)
-            except ValueError:
-                print("Parse error:", line)
+        for i in range(len(positions)):
+            print(positions[i])
+            input("Press enter to start")
+            self.ser.reset_input_buffer()
+            start_time = time.time()
+            time_elapsed = 0
+            print_msg = ""
+            while time_elapsed < duration_per_position:
+                time_elapsed = time.time() - start_time
+                new_print_msg = str(round(time_elapsed)) + '/' + \
+                    str(duration_per_position)
+                if not print_msg == new_print_msg:
+                    print(new_print_msg)
+                    print_msg = new_print_msg
+
+                line = self.ser.readline()
+                try:
+                    line = line.decode("utf-8").strip().split(",")
+                    line = [float(v) for v in line]
+                    if len(line) == 3:
+                        rows.append(line)
+                except ValueError:
+                    print("Parse error:", line)
         return np.array(rows, dtype=float)
